@@ -17,12 +17,23 @@ let App = {
     this.el = document.getElementById("sketchpad")
     this.pad = new Sketchpad(this.el, window.username)
 
-    // do stuff
+    this.bind()
     this.padChannel.on("tick", ({value}) => console.log("tick", value))
 
     this.padChannel.join()
       .receive("ok", resp => console.log("joined!", resp))
       .receive("error", resp => console.log("failed to join!", resp))
+  },
+
+  bind() {
+    this.pad.on("stroke", data => {
+      console.log("stroke")
+      this.padChannel.push("stroke", data)
+    })
+
+    this.padChannel.on("stroke", ({user_id, stroke}) => {
+      this.pad.putStroke(user_id, stroke, {color: "#000000"})
+    })
   }
 }
 

@@ -3,8 +3,7 @@ defmodule SketchpadWeb.UserSocket do
 
   ## Channels
 
-  # channel "pad:*", SketchpadWeb.RoomChannel
-  channel "pad:lobby", SketchpadWeb.PadChannel
+  channel "pad:*", SketchpadWeb.PadChannel
 
   def connect(%{"token" => token}, socket, _connect_info) do
     case Phoenix.Token.verify(socket, "token123", token, max_age: 1209600) do
