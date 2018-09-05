@@ -27,6 +27,17 @@ defmodule SketchpadWeb.PadChannel do
     {:noreply, socket}
   end
 
+  def handle_in("clear", _, %{assigns: %{pad_id: pad_id}} = socket) do
+    broadcast_clear(pad_id)
+    {:reply, :ok, socket}
+  end
+
+  def broadcast_clear(pad_id) do
+    pad_id
+    |> topic()
+    |> SketchpadWeb.Endpoint.broadcast!("clear", %{})
+  end
+
   def handle_info(:count, socket) do
     new_count = socket.assigns.count + 1
     push(socket, "tick", %{value: new_count})

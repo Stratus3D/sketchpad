@@ -34,6 +34,21 @@ let App = {
     this.padChannel.on("stroke", ({user_id, stroke}) => {
       this.pad.putStroke(user_id, stroke, {color: "#000000"})
     })
+
+    this.clearButton = document.getElementById("clear-button")
+    this.exportButton = document.getElementById("export-button")
+
+    this.clearButton.addEventListener("click", e => {
+      e.preventDefault()
+      this.padChannel.push("clear", {})
+    })
+
+    this.padChannel.on("clear", () => this.pad.clear())
+
+    this.exportButton.addEventListener("click", e => {
+      var win = window.open()
+      win.document.write(`<img src=${this.pad.getImageURL()} />`)
+    })
   }
 }
 
